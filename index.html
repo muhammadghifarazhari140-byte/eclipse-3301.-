@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROJECT ECLIPSE 3301</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;background:#080b0d;color:#b8d5c2;
+  font-family:monospace;min-height:100vh;
+  display:grid;place-items:center;padding:20px
+}
+main{
+  width:100%;max-width:650px;border:1px solid #28513b;
+  padding:28px;background:#0c1110;
+  box-shadow:0 0 35px #123c2455
+}
+h1{text-align:center;color:#70ff9b;letter-spacing:9px}
+.sub{text-align:center;color:#658575;font-size:11px}
+hr{border:0;border-top:1px solid #244331;margin:22px 0}
+.tag{color:#70ff9b;font-size:12px}
+h2{color:#fff;font-size:19px}
+p{line-height:1.8}
+input{
+  width:100%;padding:14px;background:#080b0d;
+  color:#70ff9b;border:1px solid #28513b;
+  font:inherit;margin:12px 0
+}
+button{
+  width:100%;padding:14px;background:#143b25;
+  color:#70ff9b;border:1px solid #70ff9b;
+  font:inherit;cursor:pointer;margin-top:8px
+}
+button:hover{background:#205b36}
+.hidden{display:none}
+.message{color:#70ff9b;margin-top:15px}
+.error{color:#ff6666}
+.stage{padding:12px;border:1px solid #244331;margin:8px 0}
+footer{text-align:center;color:#456252;font-size:10px;margin-top:25px}
+</style>
+</head>
+<body>
+<main>
+  <div class="tag">ECLIPSE NETWORK // TERMINAL 3301</div>
+  <h1>3301</h1>
+  <div class="sub">SOME QUESTIONS SHOULD NEVER BE ANSWERED.</div>
+  <hr>
+
+  <section id="intro">
+    <div class="tag">[ SYSTEM MESSAGE ]</div>
+    <h2>YOU HAVE BEEN SELECTED.</h2>
+    <p>
+      Lima lapisan. Lima rahasia.
+      Hanya mereka yang mampu berpikir berbeda
+      yang akan menemukan jawaban terakhir.
+    </p>
+    <button onclick="start()">INITIALIZE SYSTEM</button>
+  </section>
+
+  <section id="game" class="hidden">
+    <div class="tag" id="level">LAYER 01 / 05</div>
+    <h2 id="title"></h2>
+    <p id="question"></p>
+    <div class="stage" id="clue"></div>
+    <input id="answer" placeholder="ENTER YOUR ANSWER...">
+    <button onclick="check()">SUBMIT ANSWER</button>
+    <button onclick="hint()">REQUEST HINT</button>
+    <p id="feedback" class="message"></p>
+  </section>
+
+  <section id="ending" class="hidden">
+    <div class="tag">[ ACCESS GRANTED ]</div>
+    <h2>YOU FOUND THE ECLIPSE.</h2>
+    <p>
+      You followed every clue.
+      You decoded every message.
+      But the final question remains:
+    </p>
+    <h1>WHY?</h1>
+    <p class="message">PROJECT 3301 // COMPLETED</p>
+  </section>
+
+  <footer>
+    UNKNOWN ORIGIN // NO IDENTITY // 3301
+  </footer>
+</main>
+
+<script>
+const puzzles = [
+ {
+  title:"THE FIRST SIGNAL",
+  question:"Sebuah pesan telah dienkripsi.",
+  clue:"VKLIW",
+  hint:"Gunakan Caesar Cipher. Geser setiap huruf mundur 3 posisi.",
+  answer:"SHIFT"
+ },
+ {
+  title:"THE RED MESSAGE",
+  question:"Angka-angka ini menyimpan sebuah kata.",
+  clue:"13 - 5 - 18 - 1 - 8",
+  hint:"A=1, B=2, C=3, dan seterusnya.",
+  answer:"MERAH"
+ },
+ {
+  title:"THE MIRROR",
+  question:"Pesan ini hanya bisa dibaca melalui cermin alfabet.",
+  clue:"GSV URMZO PVB RH 7319",
+  hint:"Gunakan Atbash: A menjadi Z, B menjadi Y.",
+  answer:"7319"
+ },
+ {
+  title:"THE SILENT SIGNAL",
+  question:"Tiga sinyal pendek, tiga sinyal panjang, tiga sinyal pendek.",
+  clue:"... --- ...",
+  hint:"Ini adalah kode Morse internasional.",
+  answer:"SOS"
+ },
+ {
+  title:"THE FINAL GATE",
+  question:"Aku selalu datang, tetapi tidak pernah tiba. Apakah aku?",
+  clue:"Aku adalah lawan dari masa lalu.",
+  hint:"Pikirkan tentang waktu.",
+  answer:"MASA DEPAN"
+ }
+];
+
+let current=0;
+
+function start(){
+ document.getElementById("intro").classList.add("hidden");
+ document.getElementById("game").classList.remove("hidden");
+ loadPuzzle();
+}
+
+function loadPuzzle(){
+ const p=puzzles[current];
+ document.getElementById("level").textContent=
+ "LAYER 0"+(current+1)+" / 05";
+ document.getElementById("title").textContent=p.title;
+ document.getElementById("question").textContent=p.question;
+ document.getElementById("clue").textContent=p.clue;
+ document.getElementById("answer").value="";
+ document.getElementById("feedback").textContent="";
+}
+
+function check(){
+ const value=document.getElementById("answer").value
+ .trim().toUpperCase();
+ const feedback=document.getElementById("feedback");
+
+ if(value===puzzles[current].answer){
+  current++;
+  if(current===puzzles.length){
+   document.getElementById("game").classList.add("hidden");
+   document.getElementById("ending").classList.remove("hidden");
+  }else{
+   feedback.textContent="ACCESS GRANTED. NEXT LAYER UNLOCKED.";
+   setTimeout(loadPuzzle,900);
+  }
+ }else{
+  feedback.textContent="ACCESS DENIED. TRY AGAIN.";
+  feedback.className="message error";
+ }
+}
+
+function hint(){
+ document.getElementById("feedback").textContent=
+ "HINT: "+puzzles[current].hint;
+ document.getElementById("feedback").className="message";
+}
+
+document.getElementById("answer").addEventListener("keydown",e=>{
+ if(e.key==="Enter")check();
+});
+</script>
+</body>
+</html>
